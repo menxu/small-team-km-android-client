@@ -75,7 +75,7 @@ public class QRCodeCameraActivity extends Activity {
 		mCamera.setPreviewCallback(previewCb);
 		mCamera.startPreview();
 		previewing = true;
-		mCamera.autoFocus(autoFocusCB);
+		// mCamera.autoFocus(autoFocusCB);
 
 		AudioManager audioService = (AudioManager) getSystemService(AUDIO_SERVICE);
 		if (audioService.getRingerMode() != AudioManager.RINGER_MODE_NORMAL) {
