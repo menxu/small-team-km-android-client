@@ -1,5 +1,7 @@
 package com.teamkn.activity.dataitem;
 
+import java.util.List;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -182,12 +184,13 @@ public class CreateDataItemActivity extends TeamknBaseActivity{
 					back = HttpApi.DataItem.update(dataItem); 
 					break;
 				case RequestCode.QRCODE:
-					if(HttpApi.get_qrcode_search(qrcode_result.code) .size() > 0){
-						product = HttpApi.get_qrcode_search(qrcode_result.code).get(0);
-					}else{
-						back = "亲，好不意思，没有搜索到";
+					List<Product> qrcode_data = HttpApi.get_qrcode_search(qrcode_result.code);
+					if(qrcode_data.size() > 0){
+						product = qrcode_data.get(0);
+						break;
 					}
-					break;
+					back = "亲，好不意思，没有搜索到";
+					return back;
 				default:
 					break;
 				}
