@@ -50,6 +50,7 @@
 	<activity android:name=".activity.dataitem.MusicSearchActivity" />
 	<activity android:name=".activity.dataitem.MusicSearchResultActivity" />
 	
+	<activity android:name=".activity.dataitem.ShowDataItemActivity"></activity>
 	
 	
 	<activity android:name=".activity.dataitem.pull.DataItemPullListActivity"></activity>

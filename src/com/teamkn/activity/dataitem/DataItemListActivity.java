@@ -613,13 +613,13 @@ public class DataItemListActivity extends TeamknBaseActivity {
 				Class<?> result_class = null;
 				Intent intent = new Intent();
 				if(item.kind.equals(DataItem.Kind.PRODUCT)){
-					result_class = ShowProductDataItem.class;
+					result_class = ShowDataItemActivity.class;
 					if(item.product!=null){
 						intent.putExtra("product",item.product);
 						item.setProduct(null);
 					}
 				}else if(item.kind.equals(DataItem.Kind.MUSIC)){
-					result_class =  MusicShowActivity.class;
+					result_class =  ShowDataItemActivity.class;
 				}else if(item.kind.equals(DataItem.Kind.TEXT)){
 					result_class = CreateDataItemActivity.class;
 				}
