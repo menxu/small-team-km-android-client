@@ -211,7 +211,6 @@ public class CreateDataItemActivity extends TeamknBaseActivity{
 				}else{
 					BaseUtils.toast(result);
 				}
-				
 			}
 		}.execute();
 	}
