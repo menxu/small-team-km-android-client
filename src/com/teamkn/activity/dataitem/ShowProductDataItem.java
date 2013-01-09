@@ -14,6 +14,9 @@ public class ShowProductDataItem extends TeamknBaseActivity{
 	TextView data_list_title_tv,data_item_title,
 			 data_item_name,data_item_kind,
 			 data_item_unit,data_item_origin,data_item_vendor;
+	
+	
+	
 	String barcode_format  ;
 	String text  ;
 	@Override
