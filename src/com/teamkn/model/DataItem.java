@@ -57,6 +57,12 @@ public class DataItem extends BaseModel implements Serializable{
 	  
 	 
 	  
+	public MusicInfo getMusic_info() {
+		return music_info;
+	}
+	public void setMusic_info(MusicInfo music_info) {
+		this.music_info = music_info;
+	}
 	public Product getProduct() {
 		return product;
 	}

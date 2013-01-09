@@ -10,13 +10,14 @@ import android.widget.TextView;
 
 import com.teamkn.R;
 import com.teamkn.Logic.HttpApi;
-import com.teamkn.activity.dataitem.DataItemListActivity.RequestCode;
 import com.teamkn.activity.qrcode.QRCodeCameraActivity;
 import com.teamkn.base.activity.TeamknBaseActivity;
 import com.teamkn.base.task.TeamknAsyncTask;
 import com.teamkn.base.utils.BaseUtils;
+import com.teamkn.cache.image.ImageCache;
 import com.teamkn.model.DataItem;
 import com.teamkn.model.DataList;
+import com.teamkn.model.MusicInfo;
 import com.teamkn.model.Product;
 import com.teamkn.model.QRCodeResult;
 
@@ -27,6 +28,7 @@ public class CreateDataItemActivity extends TeamknBaseActivity{
 	    final static int CREATE = 1; 
 	    final static int UPDATE = 2;
 	    final static int QRCODE = 3;
+	    final static int MUSIC  = 4;
 	}
 	TextView show_page_title;
 	TextView data_list_title_tv;
@@ -34,6 +36,7 @@ public class CreateDataItemActivity extends TeamknBaseActivity{
 	EditText create_data_item_title_et,create_data_item_content_et;
 	
 	LinearLayout include_product;
+	LinearLayout include_music_info;
 	
 	String data_list_public;
 	DataList dataList;
@@ -41,6 +44,7 @@ public class CreateDataItemActivity extends TeamknBaseActivity{
 	
 	QRCodeResult qrcode_result;
 	Product product;
+	MusicInfo music_info;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -51,6 +55,8 @@ public class CreateDataItemActivity extends TeamknBaseActivity{
 		data_list_public = intent.getStringExtra("data_list_public");
 		qrcode_result = (QRCodeResult)intent.getExtras().getSerializable("code_result");
 		
+		music_info = (MusicInfo)intent.getExtras().getSerializable("music_info");
+		
 		set_type();
 		load_UI();
 		if(RequestCode.TYPE == RequestCode.QRCODE){
@@ -60,6 +66,7 @@ public class CreateDataItemActivity extends TeamknBaseActivity{
 	private void set_type() {
 		boolean qrcode = (qrcode_result != null);
 		boolean update = dataItem !=null && !qrcode;
+		boolean music = music_info !=null ;
 //		boolean create = !(qrcode || update);
 		if(qrcode){
 			RequestCode.TYPE = RequestCode.QRCODE;
@@ -70,6 +77,11 @@ public class CreateDataItemActivity extends TeamknBaseActivity{
 			RequestCode.TYPE = RequestCode.UPDATE;
 			return;
 		}
+		if(music){
+			RequestCode.TYPE = RequestCode.MUSIC;
+			RequestCode.KIND = DataItem.Kind.MUSIC;
+			return;
+		}
 	}
 	private void load_UI() {
 		show_page_title = (TextView)findViewById(R.id.show_page_title);
@@ -77,6 +89,7 @@ public class CreateDataItemActivity extends TeamknBaseActivity{
 		create_data_item_title_et = (EditText)findViewById(R.id.create_data_item_title_et);
 		create_data_item_content_et = (EditText)findViewById(R.id.create_data_item_content_et);
 		include_product = (LinearLayout)findViewById(R.id.include_product);
+		include_music_info = (LinearLayout)findViewById(R.id.include_music_info);
 		set_page_title();
 	}
 	private void set_page_title() {
@@ -96,21 +109,47 @@ public class CreateDataItemActivity extends TeamknBaseActivity{
 			show_page_title.setText("创建条目");	
 			return;
 		}
+		if(RequestCode.TYPE == RequestCode.MUSIC){
+			create_data_item_title_et.setText(music_info.music_title);
+			show_page_title.setText("创建条目");
+			show_music_info();
+			return;
+		}
 		show_page_title.setText("创建条目");	
 		include_product.setVisibility(View.GONE);
+		include_music_info.setVisibility(View.GONE);
 	}
-
+	private void show_music_info(){
+		if(music_info == null ){
+			return;
+		}
+		RequestCode.TYPE = RequestCode.CREATE;
+		
+		TextView music_info_album = (TextView)findViewById(R.id.music_info_album);
+		TextView music_info_author_name = (TextView)findViewById(R.id.music_info_author_name);
+		ImageView music_info_cover_src = (ImageView)findViewById(R.id.music_info_cover_src);
+		
+		music_info_album.setText(music_info.album_title);
+		music_info_author_name.setText(music_info.author_name);
+		ImageCache.load_cached_image(music_info.cover_src, music_info_cover_src);
+		
+		include_music_info.setVisibility(View.VISIBLE);
+	}
 	public void click_data_item_save_iv(View view){
 		final String title_str = create_data_item_title_et.getText().toString();
 		final String content_str = create_data_item_content_et.getText().toString();
 		
 		boolean qrcode_is_str_blank = (product!=null) && BaseUtils.is_str_blank(title_str);
+		boolean music_is_str_blank = (product!=null) && BaseUtils.is_str_blank(title_str);
+		
 		boolean create_is_str_blank = (RequestCode.TYPE == RequestCode.CREATE ) && (BaseUtils.is_str_blank(title_str) || BaseUtils.is_str_blank(content_str) );
-		if(qrcode_is_str_blank){
+		
+		
+		if(qrcode_is_str_blank || music_is_str_blank){
 			 BaseUtils.toast("标题不可以为空");
 			 return;
 		}
-		if(create_is_str_blank && product==null){
+		if(create_is_str_blank && product==null && music_info==null){
 			 BaseUtils.toast("标题和内容不可以为空");
 			 return;
 		}
@@ -132,6 +171,9 @@ public class CreateDataItemActivity extends TeamknBaseActivity{
 					if(product!=null && product.code!=null){
 						dataitem.setProduct(product);
 					}
+					if(music_info!=null && music_info.music_title!=null){
+						dataitem.setMusic_info(music_info);
+					}
 					back = HttpApi.DataItem.create(dataitem); 
 					break;
 				case RequestCode.UPDATE:
@@ -140,7 +182,11 @@ public class CreateDataItemActivity extends TeamknBaseActivity{
 					back = HttpApi.DataItem.update(dataItem); 
 					break;
 				case RequestCode.QRCODE:
-					product = HttpApi.get_qrcode_search(qrcode_result.code).get(0);
+					if(HttpApi.get_qrcode_search(qrcode_result.code) .size() > 0){
+						product = HttpApi.get_qrcode_search(qrcode_result.code).get(0);
+					}else{
+						back = "亲，好不意思，没有搜索到";
+					}
 					break;
 				default:
 					break;

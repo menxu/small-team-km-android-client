@@ -1111,11 +1111,13 @@ public class HttpApi {
    		  if(dataItem.kind.equals(com.teamkn.model.DataItem.Kind.URL)){
    			value = dataItem.url;
    		  }else if(dataItem.kind.equals(com.teamkn.model.DataItem.Kind.PRODUCT)){
-   			value = dataItem.product.id+"";
+   			value = Integer.toString(dataItem.product.id);
+   		  }else if(dataItem.kind.equals(com.teamkn.model.DataItem.Kind.MUSIC)){
+   			value = Integer.toString(dataItem.music_info.id);
    		  }else{
    			value = dataItem.content;
    		  }
-   		  
+   		  System.out.println("create: " + dataItem.toString());
 		   return new TeamknPostRequest<String>( 创建_data_item + dataItem.server_data_list_id+ "/data_items",
 	            new PostParamText("title",dataItem.title),
 	            new PostParamText("kind",dataItem.kind),
