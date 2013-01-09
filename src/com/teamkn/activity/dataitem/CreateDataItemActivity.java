@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.teamkn.R;
 import com.teamkn.Logic.HttpApi;
+import com.teamkn.activity.dataitem.DataItemListActivity.RequestCode;
 import com.teamkn.activity.qrcode.QRCodeCameraActivity;
 import com.teamkn.base.activity.TeamknBaseActivity;
 import com.teamkn.base.task.TeamknAsyncTask;
@@ -193,7 +194,11 @@ public class CreateDataItemActivity extends TeamknBaseActivity{
 		intent.putExtras(bundle);
 		startActivity(intent);
 	}
+	
+	// 显示音乐搜索页面
 	public void click_music_btn(View view){
-		
+		Intent intent = new Intent(CreateDataItemActivity.this,MusicSearchActivity.class);
+		intent.putExtra("data_list", dataList);
+		startActivity(intent);
 	}
 }
