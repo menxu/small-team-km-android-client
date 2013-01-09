@@ -91,6 +91,9 @@
 				       <include 
 				           layout="@layout/product_item" 
 				       />
+				       <include 
+				           layout="@layout/music_info_item" 
+				       />
 				   </RelativeLayout>
 			       
 			   </RelativeLayout>

@@ -61,7 +61,7 @@ public class MusicSearchResultActivity extends TeamknBaseActivity {
 						int item_id, long position) {
 					TextView selected_music = (TextView) list_item.findViewById(R.id.music_info_id);
 					MusicInfo item = (MusicInfo) selected_music.getTag(R.id.music_info_id);
-					Intent intent = new Intent(MusicSearchResultActivity.this, MusicSearchActivity.class);
+					Intent intent = new Intent(MusicSearchResultActivity.this, CreateDataItemActivity.class);
 					intent.putExtra("music_info", item);
 					intent.putExtra("data_list", data_list);			
 					startActivity(intent);
@@ -72,5 +72,4 @@ public class MusicSearchResultActivity extends TeamknBaseActivity {
 			e.printStackTrace();
 		}
 	}
-	
 }
