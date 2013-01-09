@@ -56,6 +56,8 @@
     <!-- 二维码 -->
     <string name="tkn_qrcode_but">扫描二维码/条形码</string>
     <string name="tkn_now_scanning">正在扫描.....</string>
+    
+    <string name="tkn_music_but">搜索音乐</string>
     <!-- SEARCH -->
     <string name="search_title">搜索</string>
     <string name="search_list">搜索列表</string>

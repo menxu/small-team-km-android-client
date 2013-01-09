@@ -35,12 +35,10 @@ import com.teamkn.model.VersionCheck;
 import com.teamkn.model.database.UserDBHelper;
 
 public class HttpApi {
-
-//    public static final String SITE = "http://192.168.1.38:9527";
+//  public static final String SITE = "http://192.168.1.38:9527";
 //	public static final String SITE = "http://192.168.1.26:9527";
-//	public static final String SITE = "http://teamkn.mindpin.com";
-	public static final String SITE = "http://dev.kaid.me";
-//	http://dev.kaid.me/api/products/search
+	public static final String SITE = "http://teamkn.mindpin.com";
+//	public static final String SITE = "http://dev.kaid.me";
 	
     // 各种路径常量
 	public static final String 版本检查 = "/check_version";

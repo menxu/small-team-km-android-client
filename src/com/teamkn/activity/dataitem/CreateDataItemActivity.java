@@ -193,4 +193,7 @@ public class CreateDataItemActivity extends TeamknBaseActivity{
 		intent.putExtras(bundle);
 		startActivity(intent);
 	}
+	public void click_music_btn(View view){
+		
+	}
 }

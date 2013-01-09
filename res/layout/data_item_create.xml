@@ -75,8 +75,17 @@
 				       android:onClick="click_qrcode_btn"
 				       android:text="@string/tkn_qrcode_but"
 				   />
-				   <RelativeLayout 
+				   <Button 
 				       android:layout_below="@+id/qrcode_but"
+				       android:id="@+id/music_but"
+				       android:layout_width="fill_parent"
+				       android:layout_height="wrap_content"
+				       android:layout_margin="5dp"
+				       android:onClick="click_music_btn"
+				       android:text="@string/tkn_music_but"
+				   />
+				   <RelativeLayout 
+				       android:layout_below="@+id/music_but"
 				       android:layout_width="fill_parent"
 				       android:layout_height="wrap_content">
 				       <include 
