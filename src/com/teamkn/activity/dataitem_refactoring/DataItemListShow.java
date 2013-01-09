@@ -67,7 +67,7 @@ public class DataItemListShow  extends TeamknBaseActivity {
 	
 	/// api  读数据
 	Map<Object, Object> map;
-	boolean is_reading ;
+	static boolean is_reading ;
 	List<DataItem> data_items;
 	User user;
 	 
@@ -221,43 +221,56 @@ public class DataItemListShow  extends TeamknBaseActivity {
 				//加载收藏的按钮的显示以及触发
 				load_watch_UI();
 				load_push_UI();
-//				http_api_result();
-//				//判断列表是否有数据
-//				if(dataItems.size()==0){
+				//判断列表是否有数据
+				if(dataItems.size()==0){
 //					tlv.setVisibility(View.GONE);
 //					data_item_step_rl.setVisibility(View.GONE);
 //					data_item_list_approach_button.setVisibility(View.GONE);
 //					list_no_data_show.setVisibility(View.VISIBLE);
-//					return;
-//				}
-//				
-//				//判断是否是 要显示 步骤列表
-//				show_step = (	data_list_public.equals(MainActivity.RequestCode.公开的列表) 
-//								|| data_list_public.equals(MainActivity.RequestCode.我的书签) 
-//								|| UserDBHelper.find(dataList.user_id).user_id == current_user().user_id 
-//							)
-//							&& dataList.kind.equals(MainActivity.RequestCode.STEP)
-//							&& !is_reading ;
-//				
-//				load_step_or_list(show_step);
+					return;
+				}
 //				list_no_data_show.setVisibility(View.GONE);
-//				//判断是以那种列表展示形式 列出数据a
-//				if(show_step){
-//					if(is_reading || UserDBHelper.find(dataList.user_id).user_id == current_user().user_id){
-//						data_item_list_approach_button.setVisibility(View.VISIBLE);
-//					}else{
-//						data_item_list_approach_button.setVisibility(View.GONE);
-//					}
-//					data_item_list_approach_button.setText("以清单模式查看");
-//					load_step();
-//				}else{
-//					data_item_list_approach_button.setVisibility(View.VISIBLE);
-//					data_item_list_approach_button.setText("以向导模式查看");
-//					load_list();
-//				}
+				http_api_result();
 			}
 		}.execute();
 	}
+	private void http_api_result() {
+		//判断是否是 要显示 步骤列表
+		boolean show_step = (	data_list_public.equals(MainActivity.RequestCode.公开的列表) 
+								|| data_list_public.equals(MainActivity.RequestCode.我的书签) 
+								|| is_curretn_user_data_list
+							)
+							&& dataList.kind.equals(MainActivity.RequestCode.STEP)
+							&& !is_reading ;
+		
+		show_data_item(show_step);
+		
+//		load_step_or_list(show_step);
+//		//判断是以那种列表展示形式 列出数据a
+//		if(show_step){
+//			if(is_reading || UserDBHelper.find(dataList.user_id).user_id == current_user().user_id){
+//				data_item_list_approach_button.setVisibility(View.VISIBLE);
+//			}else{
+//				data_item_list_approach_button.setVisibility(View.GONE);
+//			}
+//			data_item_list_approach_button.setText("以清单模式查看");
+//			load_step();
+//		}else{
+//			data_item_list_approach_button.setVisibility(View.VISIBLE);
+//			data_item_list_approach_button.setText("以向导模式查看");
+//			load_list();
+//		}
+	}
+	public static void show_data_item(boolean show_step) {
+		if(show_step){
+			if(is_reading){
+				
+			}
+			return ;
+		}
+	}
+	
+	
 	//加载收藏的按钮的显示以及触发
 	private void load_watch_UI(){
 		data_list_image_iv_watch = (ImageView)findViewById(R.id.data_list_image_iv_watch);
