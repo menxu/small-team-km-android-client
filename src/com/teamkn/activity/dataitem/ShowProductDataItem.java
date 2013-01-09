@@ -49,7 +49,6 @@ public class ShowProductDataItem extends TeamknBaseActivity{
 		data_item_unit.setText(product.unit);
 		data_item_origin.setText(product.origin);
 		data_item_vendor.setText(product.vendor);
-		
 	}
 	
 }

@@ -197,6 +197,9 @@ public class CreateDataItemActivity extends TeamknBaseActivity{
 			public void on_success(String result) {
 				if(RequestCode.TYPE == RequestCode.QRCODE){
 					show_product();
+					if(!BaseUtils.is_str_blank(result)){
+						BaseUtils.toast(result);
+					}
 					return;
 				}
 				if(BaseUtils.is_str_blank(result)){

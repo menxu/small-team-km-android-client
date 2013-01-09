@@ -5,6 +5,7 @@
        style="@style/padding_10_body"
        android:layout_width="fill_parent"
        android:layout_height="wrap_content"
+       android:visibility="gone"
  >		
  
    	 <RelativeLayout
