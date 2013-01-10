@@ -4,22 +4,20 @@ import java.util.ArrayList;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.teamkn.R;
 import com.teamkn.Logic.HttpApi;
 import com.teamkn.base.activity.TeamknBaseActivity;
 import com.teamkn.base.task.TeamknAsyncTask;
 import com.teamkn.base.utils.BaseUtils;
-import com.teamkn.cache.image.ImageCache;
 import com.teamkn.model.DataList;
 import com.teamkn.model.MusicInfo;
 import com.teamkn.widget.adapter.MusicInfoSearchAdapter;
