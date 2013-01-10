@@ -8,13 +8,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
-<<<<<<< HEAD
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-=======
->>>>>>> 15ca2bc8eee3aaeb4fa3388893c23b2c6fb1144f
+
 
 import com.teamkn.R;
 import com.teamkn.Logic.HttpApi;
@@ -50,10 +48,6 @@ public class MusicSearchActivity extends TeamknBaseActivity {
     	Intent intent = getIntent();
     	data_list = (DataList) intent.getSerializableExtra("data_list");
         music_info = (MusicInfo) intent.getSerializableExtra("music_info");
-<<<<<<< HEAD
-=======
-        
->>>>>>> 15ca2bc8eee3aaeb4fa3388893c23b2c6fb1144f
 	}
 	
 	public void do_search(View view) {
