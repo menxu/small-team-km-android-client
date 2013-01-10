@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:id="@+id/show_music_info_ll"
+     style="@style/padding_10_body"
+     android:layout_width="fill_parent"
+     android:layout_height="wrap_content" 
+     android:visibility="gone"
+>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin = "15dp"
+    >
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:text="@string/product_title" />
+
+        <TextView
+            android:id="@+id/music_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="20dp"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_toRightOf="@+id/title"
+            android:text="@string/product_title" />
+    </RelativeLayout>
+   	 <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin = "15dp"
+   	>
+       <TextView
+           android:id="@+id/album"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="唱片集：" />
+
+       <TextView
+           android:id="@+id/music_info_album"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignParentTop="true"
+           android:layout_marginLeft="20dp"
+           android:layout_toRightOf="@+id/album"
+           android:text="唱片集：" />
+     </RelativeLayout>
+     <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin = "15dp"
+   	>
+       <TextView
+           android:id="@+id/author_name"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="歌手：" />
+
+       <TextView
+           android:id="@+id/music_info_author_name"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignParentTop="true"
+           android:layout_marginLeft="20dp"
+           android:layout_toRightOf="@+id/author_name"
+           android:text="歌手：" />
+     </RelativeLayout>
+     <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin = "15dp"
+   	>
+       <TextView
+           android:id="@+id/cover_src"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="图片：" />
+
+       <ImageView
+           android:id="@+id/music_info_cover_src"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignParentTop="true"
+           android:layout_marginLeft="20dp"
+           android:layout_toRightOf="@+id/cover_src"/>
+     </RelativeLayout>
+</LinearLayout>

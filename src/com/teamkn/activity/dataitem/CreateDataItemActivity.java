@@ -160,7 +160,7 @@ public class CreateDataItemActivity extends TeamknBaseActivity{
      		return;
      	}
 
-		new TeamknAsyncTask<Void, Void, String>(CreateDataItemActivity.this,"正在处理") {
+		new TeamknAsyncTask<Void, Void, String>(this,"正在处理") {
 
 			@Override
 			public String do_in_background(Void... params)
