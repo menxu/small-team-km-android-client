@@ -303,6 +303,7 @@ public class MainActivity extends TeamknSlidingMenuActivity {
 				TextView info_tv = (TextView) list_item.findViewById(R.id.info_tv);
 				DataList item = (DataList) info_tv.getTag(R.id.tag_note_uuid);
 				Intent intent = new Intent(MainActivity.this,DataItemListActivity.class);
+//				Intent intent = new Intent(MainActivity.this,DataItemListShow.class);
 				intent.putExtra("data_list",item);
 				intent.putExtra("data_list_public", RequestCode.data_list_public);
 				System.out.println(RequestCode.data_list_public + " mainactivity setonclick  = " +item.toString());

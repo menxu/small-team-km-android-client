@@ -57,6 +57,8 @@
     
 	<activity android:name=".activity.dataitem.ShowProductDataItem"></activity>
 	
+	<activity android:name=".activity.dataitem_refactoring.DataItemListShow"></activity>
+	
     <!-- 社交圈子 -->
     <activity android:name=".activity.social_circle.SocialCircleActivity"></activity>
     <activity android:name=".activity.social_circle.UserPublicDataListActivity"></activity>

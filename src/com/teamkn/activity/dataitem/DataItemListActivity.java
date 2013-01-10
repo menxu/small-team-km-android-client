@@ -399,36 +399,28 @@ public class DataItemListActivity extends TeamknBaseActivity {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				final String add_data_list_et_str = edit_title.getText().toString();
-				if(edit_public.isChecked()){
-					public_boolean = "true";
-				}else{
-					public_boolean = "false";
+				public_boolean = edit_public.isChecked() ? "true":"false";
+				
+				if (BaseUtils.is_str_blank(add_data_list_et_str)) {
+					return;
 				}
-				if (add_data_list_et_str != null&& !add_data_list_et_str.equals(null)
-						&& !BaseUtils.is_str_blank(add_data_list_et_str)) {
-						if (BaseUtils.is_wifi_active(DataItemListActivity.this)) {
-							new TeamknAsyncTask<Void, Void, Void>(DataItemListActivity.this,"正在处理") {
-								@Override
-								public Void do_in_background(Void... params)
-										throws Exception {
-									dataList.setTitle(add_data_list_et_str);
-									dataList.setPublic_boolean(public_boolean);	
-									try {
-										HttpApi.DataList.update(dataList);
-									} catch (Exception e) {
-										e.printStackTrace();
-									}
-									return null;
-								}
-								@Override
-								public void on_success(Void result) {
-									data_list_title_tv.setText(add_data_list_et_str);
-								}
-							}.execute();
-						}else{
-							BaseUtils.toast(getResources().getString(R.string.is_wifi_active_msg));
-						}
+				if (!BaseUtils.is_wifi_active(DataItemListActivity.this)) {
+					BaseUtils.toast(getResources().getString(R.string.is_wifi_active_msg));
+					return;
 				}
+				new TeamknAsyncTask<Void, Void, Void>(DataItemListActivity.this,"正在处理") {
+					@Override
+					public Void do_in_background(Void... params)throws Exception {
+						dataList.setTitle(add_data_list_et_str);
+						dataList.setPublic_boolean(public_boolean);	
+						HttpApi.DataList.update(dataList);
+						return null;
+					}
+					@Override
+					public void on_success(Void result) {
+						data_list_title_tv.setText(add_data_list_et_str);
+					}
+				}.execute();
 			}
 		});
 		builder.show();
@@ -445,7 +437,10 @@ public class DataItemListActivity extends TeamknBaseActivity {
 	}
 	private void load_data_item_list(){
 		dataItems = new ArrayList<DataItem>();
-		if (BaseUtils.is_wifi_active(this)) {
+		if (!BaseUtils.is_wifi_active(this)) {
+			BaseUtils.toast(getResources().getString(R.string.is_wifi_active_msg));
+			return;
+		}
 			new TeamknAsyncTask<Void, Void, List<DataItem>>(DataItemListActivity.this,"内容加载中") {
 				@SuppressWarnings("unchecked")
 				@Override
@@ -462,48 +457,46 @@ public class DataItemListActivity extends TeamknBaseActivity {
 					//加载收藏的按钮的显示以及触发
 					load_watch_UI();
 					load_push_UI();
-	
-					//判断列表是否有数据
-					if(dataItems.size()==0){
-						tlv.setVisibility(View.GONE);
-						data_item_step_rl.setVisibility(View.GONE);
-						data_item_list_approach_button.setVisibility(View.GONE);
-						list_no_data_show.setVisibility(View.VISIBLE);
-					}else{
-						//判断是否是 要显示 步骤列表
-						show_step = (	data_list_public.equals(MainActivity.RequestCode.公开的列表) 
-										|| data_list_public.equals(MainActivity.RequestCode.我的书签) 
-										|| UserDBHelper.find(dataList.user_id).user_id == current_user().user_id 
-									)
-									&& dataList.kind.equals(MainActivity.RequestCode.STEP)
-									&& !is_reading ;
-						
-						load_step_or_list(show_step);
-						list_no_data_show.setVisibility(View.GONE);
-						//判断是以那种列表展示形式 列出数据a
-						if(show_step){
-							if(is_reading || UserDBHelper.find(dataList.user_id).user_id == current_user().user_id){
-								data_item_list_approach_button.setVisibility(View.VISIBLE);
-							}else{
-								data_item_list_approach_button.setVisibility(View.GONE);
-							}
-							data_item_list_approach_button.setText("以清单模式查看");
-							load_step();
-						}else{
-							data_item_list_approach_button.setVisibility(View.VISIBLE);
-							data_item_list_approach_button.setText("以向导模式查看");
-							load_list();
-						}
-					}
 					
+					http_api_result(dataItems);
 				}
 			}.execute();
+	}
+	private void http_api_result(List<DataItem> dataItems) {
+		//判断列表是否有数据
+		if(dataItems.size()==0){
+			tlv.setVisibility(View.GONE);
+			data_item_step_rl.setVisibility(View.GONE);
+			data_item_list_approach_button.setVisibility(View.GONE);
+			list_no_data_show.setVisibility(View.VISIBLE);
+			return;
+		}
+		list_no_data_show.setVisibility(View.GONE);
+		
+		//判断是否是 要显示 步骤列表
+		show_step = (	data_list_public.equals(MainActivity.RequestCode.公开的列表) 
+						|| data_list_public.equals(MainActivity.RequestCode.我的书签) 
+						|| UserDBHelper.find(dataList.user_id).user_id == current_user().user_id 
+					)
+					&& dataList.kind.equals(MainActivity.RequestCode.STEP)
+					&& !is_reading ;
+			
+		load_step_or_list(show_step);
+			
+		//判断是以那种列表展示形式 列出数据a
+		if(show_step){
+			load_step();
 		}else{
-			BaseUtils.toast(getResources().getString(R.string.is_wifi_active_msg));
+			load_list();
 		}
 	}
-	
 	private void load_step(){
+		if(is_reading || is_curretn_user_data_list){
+			data_item_list_approach_button.setVisibility(View.VISIBLE);
+		}else{
+			data_item_list_approach_button.setVisibility(View.GONE);
+		}
+		data_item_list_approach_button.setText("以清单模式查看");
 		data_item_list_approach_button.setOnClickListener(new android.view.View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -558,7 +551,8 @@ public class DataItemListActivity extends TeamknBaseActivity {
 		}
 	}
 	private void load_list() {
-		
+		data_item_list_approach_button.setVisibility(View.VISIBLE);
+		data_item_list_approach_button.setText("以向导模式查看");
 		boolean show_approach_but = (	data_list_public.equals(MainActivity.RequestCode.公开的列表) 
 				|| data_list_public.equals(MainActivity.RequestCode.我的书签) 
 				|| UserDBHelper.find(dataList.user_id).user_id == current_user().user_id 
@@ -713,26 +707,20 @@ public class DataItemListActivity extends TeamknBaseActivity {
 	}
 
 	private void insert_into(final int from_server,final String left_position,final String right_position) {
-		if (BaseUtils.is_wifi_active(this)) {
-			new TeamknAsyncTask<Void, Void, Void>() {
-				@Override
-				public Void do_in_background(Void... params) throws Exception {
-					try {
-						if (BaseUtils.is_wifi_active(DataItemListActivity.this)) {
-							HttpApi.DataItem.order(from_server, left_position,right_position);
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					return null;
-				}
-				@Override
-				public void on_success(Void result) {	
-				}
-			}.execute();
-		}else{
+		if (!BaseUtils.is_wifi_active(this)) {
 			BaseUtils.toast(getResources().getString(R.string.is_wifi_active_msg));
+			return;
 		}
+		new TeamknAsyncTask<Void, Void, Void>() {
+			@Override
+			public Void do_in_background(Void... params) throws Exception {
+				HttpApi.DataItem.order(from_server, left_position,right_position);
+				return null;
+			}
+			@Override
+			public void on_success(Void result) {	
+			}
+		}.execute();
 	}
 
 	class CreateContextMenu implements OnClickListener {
@@ -752,11 +740,9 @@ public class DataItemListActivity extends TeamknBaseActivity {
 					dataItemListAdapter.remove(from_item);
 					dataItemListAdapter.insert(from_item, from_id - 1);
 					if(from_id==1){
-						insert_into(from_item.server_data_item_id,
-								"",to_item.position);
+						insert_into(from_item.server_data_item_id,"",to_item.position);
 					}else{
-						insert_into(from_item.server_data_item_id,
-								dataItems.get(from_id - 2).position,to_item.position);
+						insert_into(from_item.server_data_item_id,dataItems.get(from_id - 2).position,to_item.position);
 					}
 					
 				}
@@ -769,11 +755,9 @@ public class DataItemListActivity extends TeamknBaseActivity {
 					dataItemListAdapter.remove(from_item1);
 					dataItemListAdapter.insert(from_item1, from_id + 1);
 					if(from_id==dataItems.size()-1){
-						insert_into(from_item1.server_data_item_id,
-								to_item1.position,"");
+						insert_into(from_item1.server_data_item_id,to_item1.position,"");
 					}else{
-						insert_into(from_item1.server_data_item_id,
-								to_item1.position,dataItems.get(from_id + 2).position);
+						insert_into(from_item1.server_data_item_id,to_item1.position,dataItems.get(from_id + 2).position);
 					}
 					
 				}else if(from_id < dataItems.size() - 1){
@@ -781,15 +765,13 @@ public class DataItemListActivity extends TeamknBaseActivity {
 					DataItem to_item1 = dataItems.get(from_id + 1);
 					dataItemListAdapter.remove(from_item1);
 					dataItemListAdapter.insert(from_item1, from_id + 1);
-					insert_into(from_item1.server_data_item_id,
-								to_item1.position,"");
+					insert_into(from_item1.server_data_item_id,to_item1.position,"");
 				}
 				break;
 			case 2:// 编辑当前子项
 				final DataItem dataItem2 = dataItems.get(from_id);
 
-				AlertDialog.Builder builder = new AlertDialog.Builder(
-						DataItemListActivity.this);
+				AlertDialog.Builder builder = new AlertDialog.Builder(DataItemListActivity.this);
 
 				builder.setTitle("请修改");
 				builder.setIcon(android.R.drawable.ic_dialog_info);
@@ -800,40 +782,26 @@ public class DataItemListActivity extends TeamknBaseActivity {
 				builder.setPositiveButton("确定",
 						new AlertDialog.OnClickListener() {
 							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								final String add_data_list_et_str = view
-										.getText().toString();
-								if (add_data_list_et_str != null
-										&& !add_data_list_et_str.equals(null)
-										&& !BaseUtils
-												.is_str_blank(add_data_list_et_str)
-										&& !add_data_list_et_str
-												.equals(dataItem2.title)) {
-									if (BaseUtils
-											.is_wifi_active(DataItemListActivity.this)) {				
-										new TeamknAsyncTask<Void, Void, Void>() {
-											@Override
-											public Void do_in_background(
-													Void... params)
-													throws Exception {
-												dataItem2.setTitle(add_data_list_et_str);
-												try {
-													HttpApi.DataItem.update(dataItem2);
-												} catch (Exception e) {
-													e.printStackTrace();
-												}
-												return null;
-											}
-											@Override
-											public void on_success(Void result) {
-												load_data_item_list();
-											}
-										}.execute();
-									}else{
-										BaseUtils.toast(getResources().getString(R.string.is_wifi_active_msg));
-									}
+							public void onClick(DialogInterface dialog,int which) {
+								final String add_data_list_et_str = view.getText().toString();
+								if ( BaseUtils.is_str_blank(add_data_list_et_str) || add_data_list_et_str.equals(dataItem2.title)) {
+									return;
 								}
+								if (!BaseUtils.is_wifi_active(DataItemListActivity.this)) {	
+									BaseUtils.toast(getResources().getString(R.string.is_wifi_active_msg));
+								}
+								new TeamknAsyncTask<Void, Void, Void>() {
+									@Override
+									public Void do_in_background(Void... params)throws Exception {
+										dataItem2.setTitle(add_data_list_et_str);
+										HttpApi.DataItem.update(dataItem2);
+										return null;
+									}
+									@Override
+									public void on_success(Void result) {
+										load_data_item_list();
+									}
+								}.execute();
 							}
 						});
 				builder.setNegativeButton("取消", null);
@@ -846,35 +814,26 @@ public class DataItemListActivity extends TeamknBaseActivity {
 				builder1.setPositiveButton("确定",
 						new AlertDialog.OnClickListener() {
 							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								final DataItem dataItem3 = dataItems.get(from_id);
-								if (BaseUtils
-										.is_wifi_active(DataItemListActivity.this)) {
-									new TeamknAsyncTask<Void, Void, Void>(DataItemListActivity.this,"正在处理") {
-										@Override
-										public Void do_in_background(
-												Void... params)
-												throws Exception {
-											try {
-												if (dataItem3.server_data_item_id >= 0) {
-													HttpApi.DataItem
-															.remove_contact(dataItem3.server_data_item_id);
-												}
-											} catch (Exception e) {
-												e.printStackTrace();
-											}
-											return null;
-										}
-										@Override
-										public void on_success(Void result) {
-											dataItems.remove(from_id);
-											load_list();
-										}
-									}.execute();
-								}else{
+							public void onClick(DialogInterface dialog,int which) {
+								if (!BaseUtils.is_wifi_active(DataItemListActivity.this)) {
 									BaseUtils.toast(getResources().getString(R.string.is_wifi_active_msg));
 								}
+								final int data_item_server_id = dataItems.get(from_id).server_data_item_id;
+								if(data_item_server_id <= 0){
+									return;
+								}
+								new TeamknAsyncTask<Void, Void, Void>(DataItemListActivity.this,"正在处理") {
+									@Override
+									public Void do_in_background(Void... params)throws Exception {
+										HttpApi.DataItem.remove_contact(data_item_server_id);
+										return null;
+									}
+									@Override
+									public void on_success(Void result) {
+										dataItems.remove(from_id);
+										load_list();
+									}
+								}.execute();
 							}
 						});
 				builder1.setNegativeButton("取消", null);

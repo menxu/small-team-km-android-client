@@ -45,6 +45,7 @@
 		        android:layout_alignBottom="@+id/query_text"
 		        android:layout_alignParentRight="true"
 		        android:onClick="do_search"
+		        android:layout_marginRight="20dp"
 		        android:text="搜索" />
 		</RelativeLayout>
     </LinearLayout>
