@@ -9,7 +9,11 @@
         style="@style/head_bar"
         android:id="@+id/head_bar"
     >
-        
+        <TextView
+            android:id="@+id/show_data_item_page_title"
+           style="@style/head_bar_text_center"
+           android:text="@string/placeholder"
+       	/>
    </RelativeLayout>
    <TextView
        	android:layout_below="@+id/head_bar"
