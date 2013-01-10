@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.teamkn.R;
 import com.teamkn.Logic.HttpApi;
 import com.teamkn.activity.qrcode.QRCodeCameraActivity;
+import com.teamkn.activity.qrcode.ScanditSDKSampleBarcodeActivity;
 import com.teamkn.base.activity.TeamknBaseActivity;
 import com.teamkn.base.task.TeamknAsyncTask;
 import com.teamkn.base.utils.BaseUtils;
@@ -235,7 +236,7 @@ public class CreateDataItemActivity extends TeamknBaseActivity{
 		include_product.setVisibility(View.VISIBLE);
 	}
 	public void click_qrcode_btn(View view){
-		Intent intent = new Intent(CreateDataItemActivity.this,QRCodeCameraActivity.class);
+		Intent intent = new Intent(CreateDataItemActivity.this,ScanditSDKSampleBarcodeActivity.class);
 		QRCodeResult qrcode_result  =  new QRCodeResult(CreateDataItemActivity.class);
 		Bundle bundle = new Bundle();
 		bundle.putSerializable("qrcode_result", qrcode_result);
