@@ -30,9 +30,12 @@ public class ShowDataItemActivity extends TeamknBaseActivity{
         TextView data_list_title_tv = (TextView)findViewById(R.id.data_list_title_tv);
         data_list_title_tv.setText(data_list.title);
         
+        TextView show_data_item_page_title = (TextView)findViewById(R.id.show_data_item_page_title);
         if( product !=null ){
+        	show_data_item_page_title.setText("显示商品信息页面");
         	show_product(product);
         }else{
+        	show_data_item_page_title.setText("显示音乐页面");
         	show_music_info();
         }
 	}
