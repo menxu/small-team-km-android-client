@@ -2,7 +2,6 @@ package com.teamkn.activity.dataitem;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,20 +14,16 @@ import android.widget.TextView;
 
 import com.teamkn.R;
 import com.teamkn.Logic.HttpApi;
-import com.teamkn.activity.base.MainActivity;
-import com.teamkn.activity.dataitem.DataItemListActivity.RequestCode;
+import com.teamkn.base.activity.TeamknBaseActivity;
 import com.teamkn.base.task.TeamknAsyncTask;
 import com.teamkn.base.utils.BaseUtils;
 import com.teamkn.cache.image.ImageCache;
-import com.teamkn.model.DataItem;
 import com.teamkn.model.DataList;
 import com.teamkn.model.MusicInfo;
-import com.teamkn.widget.adapter.DataItemListAdapter;
-import com.teamkn.widget.adapter.MusicInfoSearchAdapter;
 
 
 
-public class MusicSearchActivity extends Activity {
+public class MusicSearchActivity extends TeamknBaseActivity {
 	
 	private DataList data_list;
 	
