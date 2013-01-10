@@ -16,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -70,6 +71,7 @@ public class DataItemListShow  extends TeamknBaseActivity {
 	static boolean is_reading ;
 	List<DataItem> data_items;
 	User user;
+	private static Button data_item_list_approach_button;
 	 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -194,8 +196,12 @@ public class DataItemListShow  extends TeamknBaseActivity {
 		//加载编辑title按钮
 		data_list_image_iv_edit = (ImageView) findViewById(R.id.data_list_image_iv_edit);
 		
+		
 		//在协作列表时 显示原有者的名字
 		data_item_original_user_name = (TextView)findViewById(R.id.data_item_original_user_name);
+		
+		//步骤显示的以清单模式查看
+		data_item_list_approach_button = (Button)findViewById(R.id.data_item_list_approach_button);
 		// 加载推送的按钮
 		data_item_push_iv = (ImageView)findViewById(R.id.data_item_push_iv);
 	}
@@ -244,7 +250,7 @@ public class DataItemListShow  extends TeamknBaseActivity {
 							&& !is_reading ;
 		
 		show_data_item(show_step);
-		
+//		
 //		load_step_or_list(show_step);
 //		//判断是以那种列表展示形式 列出数据a
 //		if(show_step){
@@ -264,10 +270,16 @@ public class DataItemListShow  extends TeamknBaseActivity {
 	public static void show_data_item(boolean show_step) {
 		if(show_step){
 			if(is_reading){
-				
+				data_item_list_approach_button.setVisibility(View.VISIBLE);
+				data_item_list_approach_button.setText("以清单模式查看");
+			}else{
+				data_item_list_approach_button.setVisibility(View.GONE);
 			}
+//			load_step();
 			return ;
 		}
+		data_item_list_approach_button.setText("以向导模式查看");
+//		load_list();
 	}
 	
 	

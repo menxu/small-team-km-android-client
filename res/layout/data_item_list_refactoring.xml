@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 笔记列表 -->
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/body"
+        >
+    <RelativeLayout
+            style="@style/head_bar"
+            android:id="@+id/head"
+            >
+        <ImageView
+             android:id="@+id/data_item_add_iv"
+             android:src="@drawable/add_bold"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_alignParentRight="true"
+             android:onClick="on_create_data_item_click"
+             android:contentDescription="@string/image_description"
+        />
+        <TextView
+            android:id="@+id/data_list_user_name_tv"
+            style="@style/head_bar_text"
+            android:layout_height="fill_parent"
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical"
+            android:text="@string/tkndata_item_look_list" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/data_list_title_rl"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/head"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:background="@color/darkgrey"
+        android:gravity="center"
+        android:padding="5dp" >
+
+        <TextView
+            android:id="@+id/data_list_title_tv"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:hint="@string/tkndata_item_title_hint"
+            android:gravity="center"
+            android:layout_marginRight="30dp"
+            android:textSize="22dp" />
+
+        <ImageView
+            android:id="@+id/data_list_image_iv_edit"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/data_list_title_tv"
+            android:contentDescription="@string/image_description"
+            android:src="@android:drawable/ic_menu_edit" />
+
+    </RelativeLayout>
+	<RelativeLayout 
+	    android:layout_below="@+id/data_list_title_rl"
+	    android:id="@+id/include_data_item_rl"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content">
+	    <include layout="@layout/data_item_list_step"/>
+	</RelativeLayout>
+   <RelativeLayout
+       android:layout_below="@+id/include_data_item_rl"
+       android:id="@+id/data_item_watch_rl"
+       android:layout_width="fill_parent"
+       android:gravity="center_vertical"
+       android:layout_alignParentBottom="true"
+       android:layout_marginLeft="10dp"
+       android:layout_marginRight="10dp"
+       android:layout_height="50dp">
+
+       <Button
+           android:id="@+id/data_item_list_approach_button"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="@string/placeholder" />
+       <ImageView
+           android:id="@+id/data_list_image_iv_watch"
+           android:layout_width="40dp"
+           android:layout_height="40dp"
+           android:layout_alignParentRight="true"
+           android:background="@drawable/star_gray"
+           android:contentDescription="@string/image_description"
+           android:text="@string/placeholder" />
+
+       <ImageView
+           android:id="@+id/data_item_push_iv"
+           android:layout_width="40dp"
+           android:layout_height="40dp"
+           android:layout_centerVertical="true"
+           android:layout_marginRight="14dp"
+           android:layout_toLeftOf="@+id/data_list_image_iv_watch"
+           android:background="@drawable/gray_pencil"
+           android:contentDescription="@string/image_description"
+           android:clickable="false" />
+
+       <TextView
+           android:id="@+id/data_item_original_user_name"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignBottom="@+id/data_item_push_iv"
+           android:layout_toLeftOf="@+id/data_item_push_iv"
+           android:visibility="gone"
+           android:text="@string/placeholder" />
+   </RelativeLayout>
+</RelativeLayout>

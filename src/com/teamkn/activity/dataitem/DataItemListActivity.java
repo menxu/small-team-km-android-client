@@ -240,99 +240,100 @@ public class DataItemListActivity extends TeamknBaseActivity {
 				}	
 			}.execute();
 	}
-	// 加载推送的按钮
-	private void load_push_UI(){
-		data_item_push_iv.setOnClickListener(new android.view.View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				//if是 当前用户，并且被推送了   显示处理推送按钮的处理事件
-				if(is_curretn_user_data_list  && dataList.has_commits.equals("true")){
-					Intent intent = new Intent(DataItemListActivity.this,DataItemPullListActivity.class);
-					intent.putExtra("data_list", dataList);
-					startActivityForResult(intent, RequestCode.BACK);
-				}else{
-					//推送操作
-					fork_data_list();
-				}				
-			}
-		});
-		
-		User user = UserDBHelper.find(dataList.user_id);
-		//显示我迁出的图标  亮色的叉号
-		boolean 我迁出的 = (data_list_public.equals(MainActivity.RequestCode.公开的列表)
-							|| data_list_public.equals(MainActivity.RequestCode.我的首页)
-							||data_list_public.equals(MainActivity.RequestCode.我的书签) 
-						  )
-						  && dataList.forked==true && user.user_id!=current_user().user_id;
-		//显示我还没有迁出的图标  灰色的叉号
-		boolean 没有迁出的 = (	data_list_public.equals(MainActivity.RequestCode.公开的列表)
+		// 加载推送的按钮
+		private void load_push_UI(){
+
+			User user = UserDBHelper.find(dataList.user_id);
+			//显示我迁出的图标  亮色的叉号
+			boolean 我迁出的 = (data_list_public.equals(MainActivity.RequestCode.公开的列表)
 								|| data_list_public.equals(MainActivity.RequestCode.我的首页)
 								||data_list_public.equals(MainActivity.RequestCode.我的书签) 
-							)
-							&& dataList.forked==false  
-							&& user.user_id!=current_user().user_id;
-		//公开的列表 我的首页 我的书签  中 我的列表  不显示
-		boolean 我的列表 = ( data_list_public.equals(MainActivity.RequestCode.公开的列表)
-							|| data_list_public.equals(MainActivity.RequestCode.我的首页)
-							||data_list_public.equals(MainActivity.RequestCode.我的书签)
-						  )
-						  && user.user_id == current_user().user_id ;
-		//我协作的列表 分为 原作者 已删除  是否  分 从 XXX  迁出  与  已被原作者删除 
-		boolean 我协作的列表 = data_list_public.equals(MainActivity.RequestCode.协作列表) ;
-		//  自己的列表中有 被迁出的 并且被修改了
-		//  在我的列表，或 被协作列表   显示  一个 说话的状态图的 图标 
-		boolean 被协作并被修改 =  (   data_list_public.equals(MainActivity.RequestCode.我的列表)
-									|| data_list_public.equals(MainActivity.RequestCode.被协作列表) 
-								) 
-								&& dataList.has_commits .equals("true") ;
-		
-		
-		// 公开的列表 我的首页 我的书签  别人的列表中 我已经迁出的  
-		if(我迁出的){
-			data_item_push_iv.setVisibility(View.VISIBLE);
-			data_item_push_iv.setBackgroundDrawable(getResources().getDrawable(R.drawable.hell_pencil));
-			data_item_push_iv.setClickable(false);
-			data_item_push_iv.setFocusable(false);
+							  )
+							  && dataList.forked==true && user.user_id!=current_user().user_id;
+			//显示我还没有迁出的图标  灰色的叉号
+			boolean 没有迁出的 = (	data_list_public.equals(MainActivity.RequestCode.公开的列表)
+									|| data_list_public.equals(MainActivity.RequestCode.我的首页)
+									||data_list_public.equals(MainActivity.RequestCode.我的书签) 
+								)
+								&& dataList.forked==false  
+								&& user.user_id!=current_user().user_id;
+			//公开的列表 我的首页 我的书签  中 我的列表  不显示
+			boolean 我的列表 = ( data_list_public.equals(MainActivity.RequestCode.公开的列表)
+								|| data_list_public.equals(MainActivity.RequestCode.我的首页)
+								||data_list_public.equals(MainActivity.RequestCode.我的书签)
+							  )
+							  && user.user_id == current_user().user_id ;
+			//我协作的列表 分为 原作者 已删除  是否  分 从 XXX  迁出  与  已被原作者删除 
+			boolean 我协作的列表 = data_list_public.equals(MainActivity.RequestCode.协作列表) ;
+			//  自己的列表中有 被迁出的 并且被修改了
+			//  在我的列表，或 被协作列表   显示  一个 说话的状态图的 图标 
+			boolean 被协作并被修改 =  (   data_list_public.equals(MainActivity.RequestCode.我的列表)
+										|| data_list_public.equals(MainActivity.RequestCode.被协作列表) 
+									) 
+									&& dataList.has_commits .equals("true") ;
 			
-			// 公开的列表 我的首页 我的书签  别人的列表中 没有迁出的
-		}else if(没有迁出的){
-			data_item_push_iv.setVisibility(View.VISIBLE);
-			data_item_push_iv.setBackgroundDrawable(getResources().getDrawable(R.drawable.gray_pencil));
 			
-			// 公开的列表 我的首页 我的书签  中 我的列表
-		}else if(我的列表){
-			data_item_push_iv.setVisibility(View.GONE);
-			
-			//我协作的列表 分为 原作者 已删除  是否
-		}else if(我协作的列表){
-			if(map.get("user")!=null){
-				//判断是否 是 协作列表 显示原始用户名
-				data_item_push_iv.setVisibility(View.GONE);
-				data_item_original_user_name.setVisibility(View.VISIBLE);
+			// 公开的列表 我的首页 我的书签  别人的列表中 我已经迁出的  
+			if(我迁出的){
+				data_item_push_iv.setVisibility(View.VISIBLE);
+				data_item_push_iv.setBackgroundDrawable(getResources().getDrawable(R.drawable.hell_pencil));
+				data_item_push_iv.setClickable(false);
+				data_item_push_iv.setFocusable(false);
 				
-				if(dataList.forked_from_is_removed.equals("true")){
-					data_item_original_user_name.setText(getResources().getString(R.string.is_no_data));
+				// 公开的列表 我的首页 我的书签  别人的列表中 没有迁出的
+			}else if(没有迁出的){
+				data_item_push_iv.setVisibility(View.VISIBLE);
+				data_item_push_iv.setBackgroundDrawable(getResources().getDrawable(R.drawable.gray_pencil));
+				
+				// 公开的列表 我的首页 我的书签  中 我的列表
+			}else if(我的列表){
+				data_item_push_iv.setVisibility(View.GONE);
+				
+				//我协作的列表 分为 原作者 已删除  是否
+			}else if(我协作的列表){
+				if(map.get("user")!=null){
+					//判断是否 是 协作列表 显示原始用户名
+					data_item_push_iv.setVisibility(View.GONE);
+					data_item_original_user_name.setVisibility(View.VISIBLE);
+					
+					if(dataList.forked_from_is_removed.equals("true")){
+						data_item_original_user_name.setText(getResources().getString(R.string.is_no_data));
+					}else{
+						User map_user = (User) map.get("user");
+						data_item_original_user_name.setText(Html.fromHtml("从<font  color=blue>"
+						+map_user.user_name+"</font>的列表迁出"));
+					}
 				}else{
-					User map_user = (User) map.get("user");
-					data_item_original_user_name.setText(Html.fromHtml("从<font  color=blue>"
-					+map_user.user_name+"</font>的列表迁出"));
+					data_item_original_user_name.setVisibility(View.VISIBLE);
+					data_item_original_user_name.setText(getResources().getString(R.string.is_no_data));
 				}
+				
+				//  自己的列表中有 被迁出的 并且被修改了
+				//  在我的列表，或 被协作列表
+			}else if(被协作并被修改){
+				data_item_push_iv.setVisibility(View.VISIBLE);
+				data_item_push_iv.setBackgroundDrawable(getResources().getDrawable(android.R.drawable.sym_action_chat));
+				
+				//	其他的情况不显示
 			}else{
-				data_item_original_user_name.setVisibility(View.VISIBLE);
-				data_item_original_user_name.setText(getResources().getString(R.string.is_no_data));
+				data_item_push_iv.setClickable(false);
+				data_item_push_iv.setFocusable(false);
 			}
 			
-			//  自己的列表中有 被迁出的 并且被修改了
-			//  在我的列表，或 被协作列表
-		}else if(被协作并被修改){
-			data_item_push_iv.setVisibility(View.VISIBLE);
-			data_item_push_iv.setBackgroundDrawable(getResources().getDrawable(android.R.drawable.sym_action_chat));
-			
-			//	其他的情况不显示
-		}else{
-			data_item_push_iv.setClickable(false);
-			data_item_push_iv.setFocusable(false);
-		}
+			data_item_push_iv.setOnClickListener(new android.view.View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					//if是 当前用户，并且被推送了   显示处理推送按钮的处理事件
+					if(is_curretn_user_data_list  && dataList.has_commits.equals("true")){
+						Intent intent = new Intent(DataItemListActivity.this,DataItemPullListActivity.class);
+						intent.putExtra("data_list", dataList);
+						startActivityForResult(intent, RequestCode.BACK);
+					}else{
+						//推送操作
+						fork_data_list();
+					}				
+				}
+			});
 	}		
 	//推送操作
 	private void fork_data_list(){
