@@ -32,7 +32,6 @@ public class MusicShowActivity extends TeamknBaseActivity {
     
     private void load_UI() {
     	v_music_title = (TextView)findViewById(R.id.music_title);
-    	v_album_title = (TextView)findViewById(R.id.album_title);
     	v_author_name = (TextView)findViewById(R.id.author_name);
     	v_cover_src = (ImageView)findViewById(R.id.cover_src);
     	

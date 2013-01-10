@@ -7,16 +7,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.teamkn.R;
 import com.teamkn.Logic.HttpApi;
 import com.teamkn.base.activity.TeamknBaseActivity;
 import com.teamkn.base.task.TeamknAsyncTask;
 import com.teamkn.base.utils.BaseUtils;
-import com.teamkn.cache.image.ImageCache;
 import com.teamkn.model.DataList;
 import com.teamkn.model.MusicInfo;
 
@@ -28,9 +24,6 @@ public class MusicSearchActivity extends TeamknBaseActivity {
 	
 	private EditText v_query_text;
 	private MusicInfo music_info;
-	private LinearLayout v_music_result;
-	private TextView v_music_title, v_album_title, v_author_name;
-	private ImageView v_cover_src;
 	
 	
 	@Override
@@ -49,22 +42,6 @@ public class MusicSearchActivity extends TeamknBaseActivity {
     	Log.d("aaaa", Integer.toString(data_list.server_data_list_id));
         music_info = (MusicInfo) intent.getSerializableExtra("music_info");
         
-        
-        if (music_info != null) {
-        	v_music_result = (LinearLayout)findViewById(R.id.music_result);
-        	v_music_title = (TextView)findViewById(R.id.music_title);
-        	v_album_title = (TextView)findViewById(R.id.album_title);
-        	v_author_name = (TextView)findViewById(R.id.author_name);
-        	v_cover_src = (ImageView)findViewById(R.id.cover_src);
-        	
-        	v_music_result.setVisibility(View.VISIBLE);
-        	v_music_title.setText(music_info.music_title);
-        	v_album_title.setText(music_info.album_title);
-        	v_author_name.setText(music_info.author_name);
-        	
-        	ImageCache.load_cached_image(music_info.cover_src, v_cover_src);
-        }
-   
 	}
 	
 	public void do_search(View view) {

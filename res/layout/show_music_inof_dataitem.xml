@@ -87,6 +87,7 @@
            android:layout_height="wrap_content"
            android:layout_alignParentTop="true"
            android:layout_marginLeft="20dp"
-           android:layout_toRightOf="@+id/cover_src"/>
+           android:layout_toRightOf="@+id/cover_src"
+        />
      </RelativeLayout>
 </LinearLayout>
