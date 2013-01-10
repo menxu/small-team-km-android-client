@@ -45,7 +45,6 @@ public class MusicSearchActivity extends TeamknBaseActivity {
     	Intent intent = getIntent();
     	data_list = (DataList) intent.getSerializableExtra("data_list");
         music_info = (MusicInfo) intent.getSerializableExtra("music_info");
-
 	}
 	
 	public void do_search(View view) {
