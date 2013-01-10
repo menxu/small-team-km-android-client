@@ -30,6 +30,7 @@ import com.teamkn.base.http.TeamknPutRequest;
 import com.teamkn.model.AccountUser;
 import com.teamkn.model.Product;
 import com.teamkn.model.MusicInfo;
+import com.teamkn.model.QRCodeResult;
 import com.teamkn.model.User;
 import com.teamkn.model.VersionCheck;
 import com.teamkn.model.database.UserDBHelper;
@@ -1225,10 +1226,12 @@ public class HttpApi {
    	// End of DataItem
     }
     
-    public static List<Product> get_qrcode_search(String code) throws Exception{
-    	System.out.println("code:" + code);
+    public static List<Product> get_qrcode_search(QRCodeResult qrcode_result) throws Exception{
+    	System.out.println("code:" + qrcode_result.barcode);
     	return new TeamknGetRequest<List<Product>>(搜索_QRCode,
-    			new BasicNameValuePair("code", code)){
+    			new BasicNameValuePair("format", qrcode_result.symbology),
+    			new BasicNameValuePair("code", qrcode_result.barcode)
+    	){
 			@Override
 			public List<Product> on_success(String response_text) throws Exception {
 				System.out.println("------------get_qrcode_search--------------");

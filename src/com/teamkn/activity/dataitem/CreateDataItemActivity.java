@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.teamkn.R;
 import com.teamkn.Logic.HttpApi;
-import com.teamkn.activity.qrcode.QRCodeCameraActivity;
 import com.teamkn.activity.qrcode.ScanditSDKSampleBarcodeActivity;
 import com.teamkn.base.activity.TeamknBaseActivity;
 import com.teamkn.base.task.TeamknAsyncTask;
@@ -106,8 +105,8 @@ public class CreateDataItemActivity extends TeamknBaseActivity{
 			return;
 		}
 		if(RequestCode.TYPE == RequestCode.QRCODE){
-			if(qrcode_result.farmat == 64){
-				create_data_item_content_et.setText(qrcode_result.code);
+			if(qrcode_result!=null && qrcode_result.symbology.equals("QR")){
+				create_data_item_content_et.setText(qrcode_result.barcode);
 			}
 			show_page_title.setText("创建条目");	
 			return;
@@ -185,7 +184,7 @@ public class CreateDataItemActivity extends TeamknBaseActivity{
 					back = HttpApi.DataItem.update(dataItem); 
 					break;
 				case RequestCode.QRCODE:
-					List<Product> qrcode_data = HttpApi.get_qrcode_search(qrcode_result.code);
+					List<Product> qrcode_data = HttpApi.get_qrcode_search(qrcode_result);
 					if(qrcode_data.size() > 0){
 						product = qrcode_data.get(0);
 						break;

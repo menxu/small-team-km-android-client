@@ -69,7 +69,6 @@
     <activity android:name=".activity.usermsg.UserMsgActivity"></activity>
    
     <!-- 二维码 -->
-    <activity  android:name=".activity.qrcode.QRCodeCameraActivity" />
-    <activity android:name=".activity.qrcode_result.QRCodeResultActivity" />
+    <activity  android:name=".activity.qrcode.ScanditSDKSampleBarcodeActivity" />
   </application>
 </manifest>
