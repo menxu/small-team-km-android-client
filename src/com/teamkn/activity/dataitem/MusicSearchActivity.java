@@ -2,12 +2,10 @@ package com.teamkn.activity.dataitem;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,25 +13,20 @@ import android.widget.TextView;
 
 import com.teamkn.R;
 import com.teamkn.Logic.HttpApi;
-import com.teamkn.activity.base.MainActivity;
-import com.teamkn.activity.dataitem.DataItemListActivity.RequestCode;
+import com.teamkn.base.activity.TeamknBaseActivity;
 import com.teamkn.base.task.TeamknAsyncTask;
 import com.teamkn.base.utils.BaseUtils;
 import com.teamkn.cache.image.ImageCache;
-import com.teamkn.model.DataItem;
 import com.teamkn.model.DataList;
 import com.teamkn.model.MusicInfo;
-import com.teamkn.widget.adapter.DataItemListAdapter;
-import com.teamkn.widget.adapter.MusicInfoSearchAdapter;
 
 
 
-public class MusicSearchActivity extends Activity {
+public class MusicSearchActivity extends TeamknBaseActivity {
 	
 	private DataList data_list;
 	
 	private EditText v_query_text;
-	private Button v_search_btn;
 	private MusicInfo music_info;
 	private LinearLayout v_music_result;
 	private TextView v_music_title, v_album_title, v_author_name;
@@ -50,8 +43,7 @@ public class MusicSearchActivity extends Activity {
 	
 	private void load_UI() {
     	v_query_text = (EditText)findViewById(R.id.query_text);
-    	v_search_btn = (Button)findViewById(R.id.search_btn);
-    	    	
+    	
     	Intent intent = getIntent();
     	data_list = (DataList) intent.getSerializableExtra("data_list");
     	Log.d("aaaa", Integer.toString(data_list.server_data_list_id));
@@ -79,7 +71,7 @@ public class MusicSearchActivity extends Activity {
 		final String query = v_query_text.getText().toString();
 		
 		if (BaseUtils.is_wifi_active(this)) {
-			new TeamknAsyncTask<Void, Void, ArrayList<MusicInfo>>() {
+			new TeamknAsyncTask<Void, Void, ArrayList<MusicInfo>>(this,R.string.now_search) {
 				@Override
 				public ArrayList<MusicInfo> do_in_background(Void... params) throws Exception {
 					try {

@@ -1,18 +1,17 @@
 package com.teamkn.activity.dataitem;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.teamkn.R;
+import com.teamkn.base.activity.TeamknBaseActivity;
 import com.teamkn.cache.image.ImageCache;
 import com.teamkn.model.DataItem;
 import com.teamkn.model.DataList;
 
-public class MusicShowActivity extends Activity {
+public class MusicShowActivity extends TeamknBaseActivity {
 	private DataList data_list;
 	private DataItem data_item;
 	

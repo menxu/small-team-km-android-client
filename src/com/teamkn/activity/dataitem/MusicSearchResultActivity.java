@@ -2,29 +2,19 @@ package com.teamkn.activity.dataitem;
 
 
 import java.util.ArrayList;
-import java.util.List;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
-
 
 import com.teamkn.R;
-import com.teamkn.activity.dataitem.pull.DataItemPullListActivity;
-import com.teamkn.activity.dataitem.pull.DataItemPullUpdateActivity;
-import com.teamkn.activity.dataitem.pull.DataItemPullListActivity.RequestCode;
 import com.teamkn.base.activity.TeamknBaseActivity;
-import com.teamkn.model.DataItem;
 import com.teamkn.model.DataList;
 import com.teamkn.model.MusicInfo;
-import com.teamkn.model.User;
-import com.teamkn.widget.adapter.DataItemPullAdapter;
 import com.teamkn.widget.adapter.MusicInfoSearchAdapter;
 
 public class MusicSearchResultActivity extends TeamknBaseActivity {
