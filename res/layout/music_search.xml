@@ -48,10 +48,12 @@
 		        android:text="搜索" />
 		</RelativeLayout>
     </LinearLayout>
-    
-    <ListView 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-    >
-    </ListView>
+    <ListView
+       android:layout_below="@+id/music_search_page"
+        android:id="@+id/list"
+        android:layout_width="fill_parent" 
+        android:layout_height="fill_parent"
+        android:drawSelectorOnTop="false" 
+        style="@style/padding_10_body"
+    />
 </RelativeLayout>

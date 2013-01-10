@@ -4,9 +4,12 @@ import java.util.ArrayList;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.teamkn.R;
 import com.teamkn.Logic.HttpApi;
@@ -15,11 +18,12 @@ import com.teamkn.base.task.TeamknAsyncTask;
 import com.teamkn.base.utils.BaseUtils;
 import com.teamkn.model.DataList;
 import com.teamkn.model.MusicInfo;
+import com.teamkn.widget.adapter.MusicInfoSearchAdapter;
 
 
 
 public class MusicSearchActivity extends TeamknBaseActivity {
-	
+	private ListView search_result;
 	private DataList data_list;
 	
 	private EditText v_query_text;
@@ -35,13 +39,13 @@ public class MusicSearchActivity extends TeamknBaseActivity {
     }
 	
 	private void load_UI() {
+		search_result = (ListView) findViewById(R.id.list);
     	v_query_text = (EditText)findViewById(R.id.query_text);
     	
     	Intent intent = getIntent();
     	data_list = (DataList) intent.getSerializableExtra("data_list");
-    	Log.d("aaaa", Integer.toString(data_list.server_data_list_id));
         music_info = (MusicInfo) intent.getSerializableExtra("music_info");
-        
+
 	}
 	
 	public void do_search(View view) {
@@ -61,13 +65,28 @@ public class MusicSearchActivity extends TeamknBaseActivity {
 				}
 				@Override
 				public void on_success(ArrayList<MusicInfo> music_info_items) {
-					Intent intent = new Intent(MusicSearchActivity.this,
-							MusicSearchResultActivity.class);
+					try {
+						MusicInfoSearchAdapter adapter = new MusicInfoSearchAdapter(MusicSearchActivity.this);
+						adapter.add_items(music_info_items);
+						search_result.setAdapter(adapter);
+						search_result.setOnItemClickListener(new OnItemClickListener() {
+							@Override
+							public void onItemClick(AdapterView<?> list_view, View list_item,
+									int item_id, long position) {
+								TextView selected_music = (TextView) list_item.findViewById(R.id.music_info_id);
+								MusicInfo item = (MusicInfo) selected_music.getTag(R.id.music_info_id);
+								Intent intent = new Intent(MusicSearchActivity.this, CreateDataItemActivity.class);
+								intent.putExtra("music_info", item);
+								intent.putExtra("data_list", data_list);			
+								startActivity(intent);
+								finish();
+							}
+						});
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
 				
-					intent.putExtra("music_info_items", music_info_items);
-					intent.putExtra("data_list", data_list);
-					startActivity(intent);
-					finish();
 				}
 			}.execute();
 		}else{
