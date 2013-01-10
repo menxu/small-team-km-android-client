@@ -276,6 +276,7 @@ public class DataItemListShow  extends TeamknBaseActivity {
 				data_item_list_approach_button.setVisibility(View.GONE);
 			}
 //			load_step();
+			DataItemLIstStepUtil.data_item_list_step(R.layout.data_item_list_refactoring);
 			return ;
 		}
 		data_item_list_approach_button.setText("以向导模式查看");
