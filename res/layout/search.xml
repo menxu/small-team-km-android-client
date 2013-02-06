@@ -23,7 +23,7 @@
             android:shadowRadius="1"
             android:text="@string/search_title"
             android:textColor="@color/white"
-            android:textSize="20dp" 
+            android:textSize="@dimen/dimen_20dp"
         />
     </RelativeLayout>
 
@@ -85,41 +85,52 @@
             android:layout_width="fill_parent"
         />
     </ScrollView> -->
-    <ListView 
-        android:id="@+id/search_history"
-        android:layout_below="@+id/search_condition"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:divider="#00000000"
+    <ScrollView 
+       android:layout_height="fill_parent"
+       android:layout_width="fill_parent"
+       android:id="@+id/horizontal_wrapper"
+       android:layout_below="@+id/search_condition"
     >
-    </ListView>
-    <ListView 
-        android:id="@+id/search_result_list"
-        android:layout_below="@+id/search_history"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:divider="#00000000"
-    />
-    <LinearLayout
-        android:id="@+id/list_no_data_show"
-        android:layout_below="@+id/search_history"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center"
-        android:gravity="center" 
-        android:orientation="vertical"
-        android:visibility="gone"
-    >
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/gray_android_bg"
-            android:contentDescription="@string/image_description"
-        />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/search_no_data" 
-        />
-   </LinearLayout>
+       <RelativeLayout 
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content">
+		   <ListView 
+		       android:id="@+id/search_history"
+		       android:layout_width="fill_parent"
+		       android:layout_height="wrap_content"
+		       android:divider="#00000000"
+		   />
+		   <ListView 
+		       android:id="@+id/search_result_list"
+		       android:layout_below="@+id/search_history"
+		       android:layout_width="fill_parent"
+		       android:layout_height="wrap_content"
+		       android:divider="#00000000"
+		   />
+		   <LinearLayout
+		       android:id="@+id/list_no_data_show"
+		       android:layout_below="@+id/search_history"
+		       android:layout_width="fill_parent"
+		       android:layout_height="fill_parent"
+		       android:layout_gravity="center"
+		       android:gravity="center" 
+		       android:layout_marginTop="20dp"
+		       android:layout_marginBottom="20dp"
+		       android:orientation="vertical"
+		       android:visibility="gone"
+		   >
+		       <ImageView
+		           android:layout_width="wrap_content"
+		           android:layout_height="wrap_content"
+		           android:src="@drawable/gray_android_bg"
+		           android:contentDescription="@string/image_description"
+		       />
+		       <TextView
+		           android:layout_width="wrap_content"
+		           android:layout_height="wrap_content"
+		           android:text="@string/search_no_data" 
+		       />
+		  </LinearLayout>
+	  </RelativeLayout>
+   </ScrollView>
 </RelativeLayout>

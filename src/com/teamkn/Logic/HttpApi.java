@@ -212,7 +212,6 @@ public class HttpApi {
     			new BasicNameValuePair("service_user_id",service_user_id+"")) {
 					@Override
 					public AccountUser on_success(String response_text)throws Exception {
-						System.out.println("get_user_msg " + service_user_id);
 						System.out.println("get_user_msg "+response_text);
 						JSONObject json = new JSONObject(response_text);
 						return new AccountUser(json.toString());
@@ -222,12 +221,7 @@ public class HttpApi {
 //	    用户可以手动FOLLOW其他用户 [编辑]
 //	 POST '/api/users/:id/follow'  unfollow
     public static boolean follow_or_unfollow(final int service_user_id, final boolean is_follow) throws Exception {
-    	String follow_or_unfollow = "follow";
-    	if(is_follow){
-    		follow_or_unfollow = "follow";
-    	}else{
-    		follow_or_unfollow = "unfollow";
-    	}
+    	String follow_or_unfollow = is_follow ? "follow":"unfollow";
     	return new TeamknPostRequest<Boolean>(
     			用户可以手动FOLLOW_OR_UNFOLLOW其他用户 + service_user_id + "/" + follow_or_unfollow,
                 new PostParamText("service_user_id", service_user_id + ""),
@@ -235,7 +229,7 @@ public class HttpApi {
         ) {
             @Override
             public Boolean on_success(String response_text) throws Exception {
-               System.out.println("用户可以手动FOLLOW_OR_UNFOLLOW其他用户  " + 用户可以手动FOLLOW_OR_UNFOLLOW其他用户  + " : " + service_user_id + " : " + is_follow);
+            	System.out.println("用户可以手动FOLLOW_OR_UNFOLLOW其他用户  " + 用户可以手动FOLLOW_OR_UNFOLLOW其他用户  + " : " + service_user_id + " : " + is_follow);
             	return true;
             }
         }.go();
@@ -395,6 +389,7 @@ public class HttpApi {
     	public static List<com.teamkn.model.DataList> deletForkList = new ArrayList<com.teamkn.model.DataList>();
     	
     	private static com.teamkn.model.DataList getDataList(JSONObject json) throws JSONException, IOException{
+    		
     		int server_data_list_id = json.getInt("id");
     		
             String title  = json.getString("title");
@@ -532,22 +527,21 @@ public class HttpApi {
 			return dataLists;
        }
        public static List<com.teamkn.model.DataList> search_public_timeline(String search_str) throws Exception{  
-   		 final List<com.teamkn.model.DataList> dataLists = new ArrayList<com.teamkn.model.DataList>(); 
-	   		 new TeamknGetRequest<Void>(搜索公共_data_list,
+   		 	return new TeamknGetRequest<List<com.teamkn.model.DataList>>(搜索公共_data_list,
 		            new BasicNameValuePair("query", search_str)
 		            ){
 			          @Override
-			          public Void on_success(String response_text) throws Exception {
+			          public List<com.teamkn.model.DataList> on_success(String response_text) throws Exception {
 			        	  System.out.println(response_text);
+			        	  List<com.teamkn.model.DataList> dataLists = new ArrayList<com.teamkn.model.DataList>();
 			        	  JSONArray data_list_array = new JSONArray(response_text);
 		            	  for (int i = 0; i < data_list_array.length(); i++) {
 //				              int server_id = data_list_array.getInt(i);
 		                  }  
-			              return null;
+			              return dataLists;
 			          }
 			        }.go();
-			return dataLists;
-      }
+       }
     	public static List<com.teamkn.model.DataList> search_mine_watch(String search_str) throws Exception{  
    		 final List<com.teamkn.model.DataList> dataLists = new ArrayList<com.teamkn.model.DataList>(); 
 	   		 new TeamknGetRequest<Void>(搜索个人书签_data_list,
@@ -639,7 +633,6 @@ public class HttpApi {
    				                JSONObject json = data_list_array.getJSONObject(i);
    				                com.teamkn.model.DataList dataList_server =getDataList(json);		
    				                dataLists.add(dataList_server);
-   				                System.out.println("dataList_server " + dataList_server.toString());
    		                  }
    			        	  return null;
    			          }

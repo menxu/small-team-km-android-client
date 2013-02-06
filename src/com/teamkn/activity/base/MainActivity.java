@@ -44,6 +44,7 @@ import com.teamkn.Logic.HttpApi;
 import com.teamkn.activity.base.slidingmenu.CreateDataListRightSliding;
 import com.teamkn.activity.base.slidingmenu.TeamknSlidingMenuActivity;
 import com.teamkn.activity.dataitem.DataItemListActivity;
+import com.teamkn.activity.search.SearchActivity;
 import com.teamkn.base.task.TeamknAsyncTask;
 import com.teamkn.base.utils.BaseUtils;
 import com.teamkn.base.utils.ShowHelp;
@@ -194,16 +195,13 @@ public class MainActivity extends TeamknSlidingMenuActivity {
 	}
 	@Override
 	protected void onResume() {
-
 		// 设置用户头像和名字
 		AccountUser user = current_user();
 		byte[] avatar = user.avatar;
 		String name = current_user().name;
-		RelativeLayout rl = (RelativeLayout) content_view.
-				findViewById(R.id.main_user_avatar);
+		RelativeLayout rl = (RelativeLayout) content_view.findViewById(R.id.main_user_avatar);
 		if (avatar != null) {
-			Bitmap bitmap = BitmapFactory
-					.decodeStream(new ByteArrayInputStream(avatar));
+			Bitmap bitmap = BitmapFactory.decodeStream(new ByteArrayInputStream(avatar));
 			Drawable drawable = new BitmapDrawable(bitmap);
 			rl.setBackgroundDrawable(drawable);
 		} else {
@@ -229,9 +227,7 @@ public class MainActivity extends TeamknSlidingMenuActivity {
         }else{
         	main_user_name_iv.setVisibility(View.GONE);
         }
-		
 		set_title();
-		
 		super.onResume();
 	}
     private  void set_title(){
@@ -254,35 +250,33 @@ public class MainActivity extends TeamknSlidingMenuActivity {
     	}
     }
     private void load_data_list_or_watch(String watch_or_public){
-    	if (BaseUtils.is_wifi_active(this)) {
-	    	new TeamknAsyncTask<Void, Void, List<DataList>>(MainActivity.this,"内容加载中") {
-				@Override
-				public List<DataList> do_in_background(Void... params)
-						throws Exception {
-						if(RequestCode.data_list_public.equals(RequestCode.我的首页)){
-							record_datalists = HttpApi.DataList.follows_list(RequestCode.now_page, 100);
-						}else if(RequestCode.data_list_public.equals(RequestCode.公开的列表)){
-							record_datalists = HttpApi.DataList.public_timeline(RequestCode.now_page, 100);	
-						}else if(RequestCode.data_list_public.equals(RequestCode.我的列表)){
-							record_datalists = HttpApi.DataList.pull(RequestCode.data_list_type,RequestCode.now_page, 100);
-						}else if(RequestCode.data_list_public.equals(RequestCode.我的书签)){
-							record_datalists = HttpApi.WatchList.watch_public_timeline(RequestCode.now_page, 100);
-						}else if(RequestCode.data_list_public.equals(RequestCode.协作列表)){
-							record_datalists = HttpApi.DataList.forked_list(RequestCode.now_page, 100);
-						}else if(RequestCode.data_list_public.equals(RequestCode.被协作列表)){
-							record_datalists = HttpApi.DataList.be_forked_list(RequestCode.now_page, 100);
-				    	}
-					return null;
-				}
-				@Override
-				public void on_success(List<DataList> datalists) {
-					load_list();
-					judge();
-				}
-			}.execute();
-    	}else{
-			BaseUtils.toast(getResources().getString(R.string.is_wifi_active_msg));
-		}
+    	if (!BaseUtils.is_wifi_active(this)) {
+    		BaseUtils.toast(getResources().getString(R.string.is_wifi_active_msg));
+    	}
+    	new TeamknAsyncTask<Void, Void, List<DataList>>(MainActivity.this,"内容加载中") {
+			@Override
+			public List<DataList> do_in_background(Void... params)throws Exception {
+					if(RequestCode.data_list_public.equals(RequestCode.我的首页)){
+						record_datalists = HttpApi.DataList.follows_list(RequestCode.now_page, 100);
+					}else if(RequestCode.data_list_public.equals(RequestCode.公开的列表)){
+						record_datalists = HttpApi.DataList.public_timeline(RequestCode.now_page, 100);	
+					}else if(RequestCode.data_list_public.equals(RequestCode.我的列表)){
+						record_datalists = HttpApi.DataList.pull(RequestCode.data_list_type,RequestCode.now_page, 100);
+					}else if(RequestCode.data_list_public.equals(RequestCode.我的书签)){
+						record_datalists = HttpApi.WatchList.watch_public_timeline(RequestCode.now_page, 100);
+					}else if(RequestCode.data_list_public.equals(RequestCode.协作列表)){
+						record_datalists = HttpApi.DataList.forked_list(RequestCode.now_page, 100);
+					}else if(RequestCode.data_list_public.equals(RequestCode.被协作列表)){
+						record_datalists = HttpApi.DataList.be_forked_list(RequestCode.now_page, 100);
+			    	}
+				return null;
+			}
+			@Override
+			public void on_success(List<DataList> datalists) {
+				load_list();
+				judge();
+			}
+		}.execute();
     }
 	// 加载data_listview
 	private void load_list() {
@@ -351,25 +345,20 @@ public class MainActivity extends TeamknSlidingMenuActivity {
 						RequestCode.SHOW_HELP = RequestCode.SHOW_CREATE_HELP;
 						break;
 					case RequestCode.SHOW_CREATE_NEXT_HELP_CASE:
-						
 						RequestCode.SHOW_NEXT = RequestCode.SHOW_PUBLIC_HELP_CASE;
 						RequestCode.SHOW_HELP = RequestCode.SHOW_PUBLIC_HELP;
 						break;
-						
 					case RequestCode.SHOW_PUBLIC_HELP_CASE:
 						RequestCode.SHOW_NEXT = RequestCode.SHOW_NOT_HELP_CASE;
 						RequestCode.SHOW_HELP = RequestCode.SHOW_NOT_HELP;
 						break;
-						
 					case RequestCode.SHOW_NOT_HELP_CASE:
 						RequestCode.SHOW_HELP = RequestCode.SHOW_NOT_HELP;
 						break;
-					
 					default:
 						break;
 					}
 				}
-				
 				if(data!=null && data.getStringExtra("data_list_public")!=null){
 					RequestCode.data_list_public = data.getStringExtra("data_list_public");
 				}
@@ -378,23 +367,21 @@ public class MainActivity extends TeamknSlidingMenuActivity {
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-
 	public void click_collection_button(View view) {
 		RequestCode.data_list_type = RequestCode.COLLECTION;
 		load_list();
 	}
-
 	public void click_step_button(View view) {
 		RequestCode.data_list_type = RequestCode.STEP;
 		load_list();
 	}
-
 	public void click_all_button(View view) {
 		RequestCode.data_list_type = RequestCode.ALL;
 		load_list();
 	}
-	
-	
+	public void click_search_ib(View view) {
+		open_activity(SearchActivity.class);
+	}
 	//页卡 逻辑
 	private void request_pageselected(){
 		int index = 0;
@@ -610,28 +597,26 @@ public class MainActivity extends TeamknSlidingMenuActivity {
 		return super.onContextItemSelected(item);
 	}
     private void remove_data_list(final DataList dataList,final int data_list_id,final boolean is_delete_watch){
-    	if(BaseUtils.is_wifi_active(this)){
-    		new TeamknAsyncTask<Void, Void, Boolean>(MainActivity.this,getResources().getString(R.string.now_deleting)) {
-				@Override
-				public Boolean do_in_background(Void... params)
-						throws Exception {
-					if(is_delete_watch){
-						HttpApi.WatchList.watch(dataList, false);
-					}else{
-						HttpApi.DataList.remove(dataList);
-					}
-					return true;
-				}
-				@Override
-				public void on_success(Boolean result) {
-					datalists.remove(data_list_id);
-					dataListAdapter.remove_item(dataList);
-					dataListAdapter.notifyDataSetChanged();
-					BaseUtils.toast(getResources().getString(R.string.delete_success));
-				}
-			}.execute();
-    	}else{
+    	if(!BaseUtils.is_wifi_active(this)){
     		BaseUtils.toast(getResources().getString(R.string.is_wifi_active_msg));
     	}
+		new TeamknAsyncTask<Void, Void, Boolean>(MainActivity.this,getResources().getString(R.string.now_deleting)) {
+			@Override
+			public Boolean do_in_background(Void... params)throws Exception {
+				if(is_delete_watch){
+					HttpApi.WatchList.watch(dataList, false);
+					return true;
+				}
+				HttpApi.DataList.remove(dataList);
+				return true;
+			}
+			@Override
+			public void on_success(Boolean result) {
+				datalists.remove(data_list_id);
+				dataListAdapter.remove_item(dataList);
+				dataListAdapter.notifyDataSetChanged();
+				BaseUtils.toast(getResources().getString(R.string.delete_success));
+			}
+		}.execute();
     }
 }

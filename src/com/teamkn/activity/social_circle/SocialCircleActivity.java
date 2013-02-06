@@ -3,7 +3,6 @@ package com.teamkn.activity.social_circle;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.List;
 
 import android.app.Activity;
@@ -142,28 +141,26 @@ public class SocialCircleActivity extends TeamknSlidingMenuActivity{
 		public_list_tv = (Button)show_view.findViewById(R.id.public_list_tv);
 	}
 	private void load_usermsg_or_list_httpApi(final String social_type){
-    	if (BaseUtils.is_wifi_active(this)) {
-	    	new TeamknAsyncTask<Void, Void, List<DataList>>(SocialCircleActivity.this,"内容加载中") {
-				@Override
-				public List<DataList> do_in_background(Void... params)
-						throws Exception {
-						if(social_type.equals(RequestCode.MIMSG)){
-							user = HttpApi.get_user_msg(current_user().user_id);
-						}else if(social_type.equals(RequestCode.VERMICELLI)){
-							users = HttpApi.follows_or_fans(false,current_user().user_id, 1, 100);
-						}else if(social_type.equals(RequestCode.FOLLOW)){
-							users = HttpApi.follows_or_fans(true,current_user().user_id, 1, 100);
-						}
-						return null;
-				}
-				@Override
-				public void on_success(List<DataList> datalists) {
-					load_mimsg_or_list();
-				}
-			}.execute();
-    	}else{
-			BaseUtils.toast("无法连接到网络，请检查网络配置");
-		}
+    	if (!BaseUtils.is_wifi_active(this)) {
+    		BaseUtils.toast("无法连接到网络，请检查网络配置");
+    	}
+    	new TeamknAsyncTask<Void, Void, List<DataList>>(SocialCircleActivity.this,"内容加载中") {
+			@Override
+			public List<DataList> do_in_background(Void... params)throws Exception {
+					if(social_type.equals(RequestCode.MIMSG)){
+						user = HttpApi.get_user_msg(current_user().user_id);
+					}else if(social_type.equals(RequestCode.VERMICELLI)){
+						users = HttpApi.follows_or_fans(false,current_user().user_id, 1, 100);
+					}else if(social_type.equals(RequestCode.FOLLOW)){
+						users = HttpApi.follows_or_fans(true,current_user().user_id, 1, 100);
+					}
+					return null;
+			}
+			@Override
+			public void on_success(List<DataList> datalists) {
+				load_mimsg_or_list();
+			}
+		}.execute();
     }
 	private void load_mimsg_or_list(){
 		// 导航页签引用
@@ -291,6 +288,7 @@ public class SocialCircleActivity extends TeamknSlidingMenuActivity{
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode != Activity.RESULT_OK){
 			return;
 		}
@@ -300,27 +298,22 @@ public class SocialCircleActivity extends TeamknSlidingMenuActivity{
 			    startPhotoZoom(data.getData());  
 			    break;
 		  case UserManagerActivity.RequestCode.FROM_CAMERA:
-			  if (BaseUtils.is_wifi_active(this)) {
-                new TeamknAsyncTask<Void, Void, Void>(SocialCircleActivity.this,"请稍等") {
-					@Override
-					public Void do_in_background(Void... params)
-							throws Exception {
-						String file_path = CameraLogic.IMAGE_CAPTURE_TEMP_FILE.getAbsolutePath();
-						try {
-							uri= Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), file_path, null, null));
-						} catch (FileNotFoundException e) {
-							e.printStackTrace();
-						}
-						return null;
-					}
-					@Override
-					public void on_success(Void result) {
-						startPhotoZoom(uri); 
-					}
-				}.execute();   
-			  }else{
-					BaseUtils.toast(getResources().getString(R.string.is_wifi_active_msg));
+			  if (!BaseUtils.is_wifi_active(this)) {
+				  BaseUtils.toast(getResources().getString(R.string.is_wifi_active_msg));
+				  break;
+			  }
+            new TeamknAsyncTask<Void, Void, Void>(SocialCircleActivity.this,"请稍等") {
+				@Override
+				public Void do_in_background(Void... params)throws Exception {
+					String file_path = CameraLogic.IMAGE_CAPTURE_TEMP_FILE.getAbsolutePath();
+					uri= Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), file_path, null, null));
+					return null;
 				}
+				@Override
+				public void on_success(Void result) {
+					startPhotoZoom(uri); 
+				}
+			}.execute();   
             break;
 
 		  case 9:  
@@ -337,7 +330,6 @@ public class SocialCircleActivity extends TeamknSlidingMenuActivity{
               }  
               break; 
 		}
-		super.onActivityResult(requestCode, resultCode, data);
 	}
 	
     /**  
@@ -378,26 +370,25 @@ public class SocialCircleActivity extends TeamknSlidingMenuActivity{
 //            final File image_file = FileDirs.getFileFromBytes(bytes,
 //            		Environment .getExternalStorageDirectory()+"/"+current_user().user_id+".jpg" );
             image_file = FileDirs.getFileFromBytes(bytes,FileDirs.TEAMKN_CAPTURE_TEMP_DIR+  "/IMG_TEMP.jpg");
-            if (BaseUtils.is_wifi_active(this)) {
-	            new TeamknAsyncTask<Void, Void, Integer>(SocialCircleActivity.this,"信息提交") {
-	    			@Override
-	    			public Integer do_in_background(Void... params) throws Exception {
-	    			    	HttpApi.user_set_avatar(image_file);
-	    			    return 1;
-	    			}
-	    			@Override
-	    			public void on_success(Integer client_chat_node_id) {
-	    				if(requestError!=null){
-	    					Toast.makeText(SocialCircleActivity.this, requestError, Toast.LENGTH_LONG).show();
-	    				}
-	    				open_activity(UserManagerActivity.class);
-	    				System.out.println("image_file  = " + image_file.getPath());
-	    				finish();
-	    		    }
-	             }.execute();  
-            }else{
-    			BaseUtils.toast(getResources().getString(R.string.is_wifi_active_msg));
-    		}
+            if (!BaseUtils.is_wifi_active(this)) {
+            	BaseUtils.toast(getResources().getString(R.string.is_wifi_active_msg));
+            }
+            new TeamknAsyncTask<Void, Void, Integer>(SocialCircleActivity.this,"信息提交") {
+    			@Override
+    			public Integer do_in_background(Void... params) throws Exception {
+    			    HttpApi.user_set_avatar(image_file);
+    			    return 1;
+    			}
+    			@Override
+    			public void on_success(Integer client_chat_node_id) {
+    				if(requestError!=null){
+    					Toast.makeText(SocialCircleActivity.this, requestError, Toast.LENGTH_LONG).show();
+    				}
+//    				open_activity(SocialCircleActivity.class);
+//    				System.out.println("image_file  = " + image_file.getPath());
+//    				finish();
+    		    }
+             }.execute();  
         }
 	
     }

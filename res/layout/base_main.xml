@@ -158,18 +158,19 @@
         <ListView
             android:id="@+id/data_list"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:divider="@null" />
+        <ImageButton
+	       android:onClick="click_search_ib"
+	       android:layout_marginRight="20dp"
+	       android:layout_alignParentRight="true"
+	       android:layout_alignParentBottom="true"
+	       android:layout_width="wrap_content"
+	       android:layout_height="wrap_content"
+	       android:layout_marginBottom="50dp"
+	       android:background="@drawable/icon"
+	       android:contentDescription="@string/image_description"
+	   />
     </RelativeLayout>
-    <ImageButton
-        android:onClick="click_search_ib"
-        android:layout_marginBottom="40dp"
-        android:layout_marginRight="20dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/icon"
-        android:contentDescription="@string/image_description"
-    />
+    
 </RelativeLayout>

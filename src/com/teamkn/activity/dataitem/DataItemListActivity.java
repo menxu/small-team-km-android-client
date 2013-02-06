@@ -652,9 +652,6 @@ public class DataItemListActivity extends TeamknBaseActivity {
 
 			DataItem from_item = dataItems.get(from);
 			DataItem to_item = dataItems.get(to);
-			dataItemListAdapter.remove(from_item);
-			dataItemListAdapter.insert(from_item, to);
-			dataItemListAdapter.notifyDataSetChanged();
 			
 			System.out.println("from 0: to 1  : size() = " + from + " : " + to + " : " + dataItems.size());
 			if(to<=0){
@@ -675,6 +672,11 @@ public class DataItemListActivity extends TeamknBaseActivity {
 						dataItems.get(to-1).position,to_item.position);
 				System.out.println((to-1) + " : " + (to));
 			}
+			
+			dataItemListAdapter.remove(from_item);
+			dataItemListAdapter.insert(from_item, to);
+			dataItemListAdapter.notifyDataSetChanged();
+			
 			System.out.println("from_item : " + from_item);
 			System.out.println("to_item : " + to_item);	
 		}
@@ -714,6 +716,7 @@ public class DataItemListActivity extends TeamknBaseActivity {
 		new TeamknAsyncTask<Void, Void, Void>() {
 			@Override
 			public Void do_in_background(Void... params) throws Exception {
+				System.out.println("from_server, left_position,right_position " + from_server + " : " + left_position + " : " + right_position);
 				HttpApi.DataItem.order(from_server, left_position,right_position);
 				return null;
 			}
